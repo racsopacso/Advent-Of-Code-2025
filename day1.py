@@ -1,4 +1,3 @@
-
 import re
 import typing as t
 
@@ -6,7 +5,7 @@ def _parse_lines():
     with open("day1_inp.txt") as f:
         for line in f.readlines():
             left = re.match(r"L(\d+)", line)
-            
+
             if left is not None:
                 yield -int(left.group(1))
                 continue
@@ -16,6 +15,7 @@ def _parse_lines():
             if right is not None:
                 yield int(right.group(1))
 
+
 def _yield_zero_points_better(line_iter: t.Iterable[int]):
     val = 50
 
@@ -24,7 +24,7 @@ def _yield_zero_points_better(line_iter: t.Iterable[int]):
             continue
 
         parity = 1 if num > 0 else -1
-        
+
         guaranteed_clicks = abs(num) // 100
         remainder = (abs(num) % 100) * parity
 
@@ -33,9 +33,12 @@ def _yield_zero_points_better(line_iter: t.Iterable[int]):
         new_val = val + remainder
         new_val_mod = new_val % 100
 
-        if ((new_val_mod != new_val) or (new_val_mod == 0)) and (val != 0):
-            yield 1
+        # if val is already 0 then we know adding remainder won't add any more zero clicks
+        if val != 0:
+            if (new_val_mod != new_val) or (new_val_mod == 0):
+                yield 1
 
         val = new_val_mod
+
 
 print(sum(_yield_zero_points_better(_parse_lines())))
