@@ -34,6 +34,13 @@ def _yield_non_equal_factors_of(power: int):
             yield math.prod(comb_tup)
 
 def _yield_legal_multiples_for_power(power: int):
+    """
+    Yields numbers that are factors of every number with the repeated digit property we want to see 
+    within a given order of magnitude
+
+    For example: for order of magnitude 2, every repeated number is just a multiple of 11
+    For order of magnitude 4, they're all multiples of 1010 or 1111 or 0101 aka 101
+    """
     for factor in _yield_non_equal_factors_of(power):
         comb_multiply_factor = power // factor
 
@@ -47,6 +54,7 @@ def _yield_legal_multiples_for_power(power: int):
 
 @cache
 def _get_legal_multiples_for_power(power: int):
+    
     # using frozenset because we can get duplicates
     # for example: consider an 8-long number
     # we could have 4 lots of 10 or 2 lots of 1010
